@@ -3,7 +3,6 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-# আপনার ডিসকোর্ড আইডি
 MY_DISCORD_ID = 1028589017861718076
 
 class TicketLauncher(discord.ui.View):
@@ -21,7 +20,6 @@ class TicketLauncher(discord.ui.View):
         guild = interaction.guild
         user = interaction.user
 
-        # ডুপ্লিকেট টিকিট চেক
         ticket_channel_name = f"ticket-{user.name.lower()}".replace(" ", "-")
         existing_channel = discord.utils.get(
             guild.text_channels,
@@ -36,7 +34,7 @@ class TicketLauncher(discord.ui.View):
 
         await interaction.response.defer(ephemeral=True)
 
-        # পারমিশন
+     
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(
                 view_channel=False
@@ -56,14 +54,14 @@ class TicketLauncher(discord.ui.View):
             )
         }
 
-        # চ্যানেল তৈরি
+        
         ticket_channel = await guild.create_text_channel(
             name=ticket_channel_name,
             overwrites=overwrites,
             topic=f"Private Ticket for {user.name}"
         )
 
-        # এমবেড
+        
         embed = discord.Embed(
             title="🛡️ UID Whitelist",
             description=(
@@ -101,7 +99,7 @@ class CODEVERSE(commands.Bot):
 
 bot = CODEVERSE()
 
-# টিকিট প্যানেল কমান্ড
+
 @bot.tree.command(
     name="spawn_ticket",
     description="Create whitelist panel"
@@ -143,5 +141,5 @@ async def about(interaction: discord.Interaction):
         ephemeral=True
     )
 
-# Render থেকে TOKEN নিবে
+
 bot.run(os.getenv("TOKEN"))
