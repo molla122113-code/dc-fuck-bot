@@ -162,18 +162,39 @@ class CODEVERSE(commands.Bot):
 bot = CODEVERSE()
 
 
-@bot.check
-async def global_check(ctx):
+
+
+@bot.event
+async def on_message(message):
+
+    if message.author.bot:
+        return
+
+    if not bot.license_valid:
+        return
+
+    await bot.process_commands(message)
+
+
+
+
+@bot.tree.interaction_check
+async def interaction_check(
+    interaction: discord.Interaction
+):
 
     if not bot.license_valid:
 
-        await ctx.send(
-            "❌ Subscription Expired"
+        await interaction.response.send_message(
+            "❌ Subscription Expired",
+            ephemeral=True
         )
 
         return False
 
     return True
+
+
 
 
 @bot.tree.command(
@@ -188,13 +209,6 @@ async def global_check(ctx):
 async def spawn_ticket(
     interaction: discord.Interaction
 ):
-
-    if not bot.license_valid:
-
-        return await interaction.response.send_message(
-            "❌ Subscription Expired",
-            ephemeral=True
-        )
 
     embed = discord.Embed(
 
@@ -229,6 +243,8 @@ async def spawn_ticket(
 
         ephemeral=True
     )
+
+
 
 
 @bot.tree.command(
@@ -277,6 +293,8 @@ Expires:
 
         ephemeral=True
     )
+
+
 
 
 bot.run(
