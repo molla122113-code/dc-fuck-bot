@@ -7,7 +7,7 @@ from license_checker import (
 
 def setup_heartbeat(bot):
 
-    @tasks.loop(minutes=10)
+    @tasks.loop(minutes=1)
     async def heartbeat():
 
         valid, _ = check_license()
